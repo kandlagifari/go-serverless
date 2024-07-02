@@ -75,7 +75,7 @@ awslocal s3 ls s3://assalamualaikum-serverless-go-bucket
 awslocal lambda create-function \
     --function-name AssalamualaikumServerless \
     --runtime provided.al2023 \
-    --handler main.handler \
+    --handler bootstrap \
     --role arn:aws:iam::000000000000:role/AssalamualaikumServerlessRole \
     --code S3Bucket=assalamualaikum-serverless-go-bucket,S3Key=deployment.zip
 ```
@@ -86,9 +86,27 @@ awslocal lambda list-functions \
 ```
 
 ```shell
+awslocal lambda get-function \
+    --function-name  AssalamualaikumServerless
+```
+
+```shell
+awslocal lambda update-function-configuration \
+    --function-name  AssalamualaikumServerless \
+    --timeout 60
+```
+
+```shell
 awslocal lambda invoke \
     --function-name AssalamualaikumServerless \
     --cli-binary-format raw-in-base64-out \
     --payload '{}' \
     response.json
+```
+
+```shell
+awslocal lambda invoke \
+    --function-name AssalamualaikumServerless response-2.json \
+    --log-type Tail \
+    --query "LogResult"
 ```

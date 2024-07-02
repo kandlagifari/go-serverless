@@ -21,6 +21,6 @@ echo "Create Lambda"
 awslocal lambda create-function \
     --function-name AssalamualaikumServerless \
     --runtime provided.al2023 \
-    --handler main.handler \
+    --handler bootstrap \
     --role arn:aws:iam::000000000000:role/AssalamualaikumServerlessRole \
     --code S3Bucket=assalamualaikum-serverless-go-bucket,S3Key=deployment.zip
