@@ -96,6 +96,9 @@ awslocal lambda update-function-configuration \
     --timeout 60
 ```
 
+
+# Invoke Lambda
+
 ```shell
 awslocal lambda invoke \
     --function-name AssalamualaikumServerless \
@@ -110,6 +113,9 @@ awslocal lambda invoke \
     --log-type Tail \
     --query "LogResult"
 ```
+
+
+# Remove Lambda Container
 
 ```shell
 docker ps -a --filter name=localstack-lambda-assalamualaikumserverless-* -aq | xargs docker rm -f
