@@ -110,3 +110,7 @@ awslocal lambda invoke \
     --log-type Tail \
     --query "LogResult"
 ```
+
+```shell
+docker ps -a --filter name=localstack-lambda-assalamualaikumserverless-* -aq | xargs docker rm -f
+```
