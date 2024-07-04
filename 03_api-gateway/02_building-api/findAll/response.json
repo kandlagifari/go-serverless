@@ -1,0 +1,1 @@
+{"statusCode":200,"headers":{"Content-Type":"application/json"},"multiValueHeaders":null,"body":"[{\"id\":1,\"name\":\"Avengers\"},{\"id\":2,\"name\":\"Ant-Man\"},{\"id\":3,\"name\":\"Thor\"},{\"id\":4,\"name\":\"Hulk\"},{\"id\":5,\"name\":\"Doctor Strange\"}]"}

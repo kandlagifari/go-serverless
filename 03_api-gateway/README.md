@@ -215,3 +215,14 @@ awslocal logs tail /aws/lambda/AssalamualaikumServerless --follow
 
 awslocal logs tail /aws/apigateway/hb1goz0llm/accessLogs --follow
 ```
+
+
+# Invoke Lambda FindAllMovies
+
+```shell
+awslocal lambda invoke \
+    --function-name FindAllMovies \
+    --cli-binary-format raw-in-base64-out \
+    --payload '{}' \
+    response.json
+```
