@@ -226,3 +226,14 @@ awslocal lambda invoke \
     --payload '{}' \
     response.json
 ```
+
+
+# Test API Invoke
+
+```shell
+curl -sX GET http://z5dzspvbaf.execute-api.localhost.localstack.cloud:4566/staging/movies | jq
+```
+
+```shell
+curl -sX GET http://z5dzspvbaf.execute-api.localhost.localstack.cloud:4566/staging/movies/1 | jq
+```

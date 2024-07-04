@@ -14,11 +14,14 @@ awslocal iam create-role \
     --role-name AssalamualaikumServerlessRole \
     --assume-role-policy-document file:///opt/code/localstack/iam-role/lambda-assume-role.json
 
-echo "Upload ZIP file"
+echo "Upload ZIP file findAll"
 awslocal s3 cp /opt/code/localstack/findAll/deployment.zip s3://assalamualaikum-serverless-go-bucket/findAll/deployment.zip
 
+echo "Upload ZIP file findOne"
+awslocal s3 cp /opt/code/localstack/findOne/deployment.zip s3://assalamualaikum-serverless-go-bucket/findOne/deployment.zip
+
 echo "Create the Lambda function FindAllMovies"
-LAMBDA_ARN=$(awslocal lambda create-function \
+LAMBDA_FIND_ALL_ARN=$(awslocal lambda create-function \
     --function-name FindAllMovies \
     --runtime provided.al2023 \
     --handler bootstrap \
@@ -27,7 +30,17 @@ LAMBDA_ARN=$(awslocal lambda create-function \
     --query 'FunctionArn' \
     --output text)
 
-echo "Create the API"
+echo "Create the Lambda function FindOneMovie"
+LAMBDA_FIND_ONE_ARN=$(awslocal lambda create-function \
+    --function-name FindOneMovie \
+    --runtime provided.al2023 \
+    --handler bootstrap \
+    --role arn:aws:iam::000000000000:role/AssalamualaikumServerlessRole \
+    --code S3Bucket=assalamualaikum-serverless-go-bucket,S3Key=findOne/deployment.zip \
+    --query 'FunctionArn' \
+    --output text)
+
+echo "Create the API with Regional Endpoint Configuration"
 API_ID=$(awslocal apigateway create-rest-api \
     --name 'MoviesAPI' \
     --description 'Upcoming movies API' \
@@ -41,29 +54,53 @@ ROOT_RESOURCE_ID=$(awslocal apigateway get-resources \
     --query 'items[?path==`/`].id' \
     --output text)
 
-echo "Create a resource called movies"
-RESOURCE_ID=$(awslocal apigateway create-resource \
+echo "Create a new resource with a path parameter (e.g., "/movies")"
+FIND_ALL_RESOURCE_ID=$(awslocal apigateway create-resource \
     --rest-api-id $API_ID \
     --parent-id $ROOT_RESOURCE_ID \
     --path-part movies \
     --query 'id' \
     --output text)
 
-echo "Create a method GET for the resource"
+echo "Create a new resource with a path parameter (e.g., "/movies/{id}")"
+FIND_ONE_RESOURCE_ID=$(awslocal apigateway create-resource \
+    --rest-api-id $API_ID \
+    --parent-id $FIND_ALL_RESOURCE_ID \
+    --path-part {id} \
+    --query 'id' \
+    --output text)
+
+echo "Create a method GET for the resource /movies"
 awslocal apigateway put-method \
     --rest-api-id $API_ID \
-    --resource-id $RESOURCE_ID \
+    --resource-id $FIND_ALL_RESOURCE_ID \
     --http-method GET \
     --authorization-type "NONE"
 
-echo "Integrate the method with the Lambda function"
+echo "Create a method GET for the resource /movies/{id}"
+awslocal apigateway put-method \
+    --rest-api-id $API_ID \
+    --resource-id $FIND_ONE_RESOURCE_ID \
+    --http-method GET \
+    --authorization-type "NONE"
+
+echo "Integrate the method with the Lambda function FindAllMovies"
 awslocal apigateway put-integration \
     --rest-api-id $API_ID \
-    --resource-id $RESOURCE_ID \
+    --resource-id $FIND_ALL_RESOURCE_ID \
     --http-method GET \
     --type AWS_PROXY \
     --integration-http-method POST \
-    --uri arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/$LAMBDA_ARN/invocations
+    --uri arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/$LAMBDA_FIND_ALL_ARN/invocations
+
+echo "Integrate the method with the Lambda function FindOneMovie"
+awslocal apigateway put-integration \
+    --rest-api-id $API_ID \
+    --resource-id $FIND_ONE_RESOURCE_ID \
+    --http-method GET \
+    --type AWS_PROXY \
+    --integration-http-method POST \
+    --uri arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/$LAMBDA_FIND_ONE_ARN/invocations
 
 echo "Deploy the API"
 awslocal apigateway create-deployment \
