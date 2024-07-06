@@ -256,15 +256,15 @@ awslocal logs tail /aws/lambda/InsertMovie --follow
 # Test API Invoke
 
 ```shell
-curl -sX GET http://my7eu6wge7.execute-api.localhost.localstack.cloud:4566/staging/movies | jq
+curl -sX GET http://gyxm47qdju.execute-api.localhost.localstack.cloud:4566/staging/movies | jq
 ```
 
 ```shell
-curl -sX GET http://my7eu6wge7.execute-api.localhost.localstack.cloud:4566/staging/movies | jq
+curl -sX GET http://gyxm47qdju.execute-api.localhost.localstack.cloud:4566/staging/movies | jq
 ```
 
 ```shell
-curl -sX POST -d '{"body": "{\"id\":6,\"name\":\"Sword Art Online\"}"}' http://my7eu6wge7.execute-api.localhost.localstack.cloud:4566/staging/movies | jq
+curl -sX POST -d '{"body": "{\"id\":6,\"name\":\"Sword Art Online\"}"}' http://gyxm47qdju.execute-api.localhost.localstack.cloud:4566/staging/movies | jq
 
-curl -sX POST -d '{"body": "{\"id\":7,\"name\":\"No Game No Life\"}"}' http://my7eu6wge7.execute-api.localhost.localstack.cloud:4566/staging/movies | jq
+curl -sX POST -d '{"body": "{\"id\":7,\"name\":\"No Game No Life\"}"}' http://gyxm47qdju.execute-api.localhost.localstack.cloud:4566/staging/movies | jq
 ```
