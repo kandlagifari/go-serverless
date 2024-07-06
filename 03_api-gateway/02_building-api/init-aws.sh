@@ -20,6 +20,9 @@ awslocal s3 cp /opt/code/localstack/findAll/deployment.zip s3://assalamualaikum-
 echo "Upload ZIP file findOne"
 awslocal s3 cp /opt/code/localstack/findOne/deployment.zip s3://assalamualaikum-serverless-go-bucket/findOne/deployment.zip
 
+echo "Upload ZIP file insert"
+awslocal s3 cp /opt/code/localstack/insert/deployment.zip s3://assalamualaikum-serverless-go-bucket/insert/deployment.zip
+
 echo "Create the Lambda function FindAllMovies"
 LAMBDA_FIND_ALL_ARN=$(awslocal lambda create-function \
     --function-name FindAllMovies \
@@ -40,6 +43,16 @@ LAMBDA_FIND_ONE_ARN=$(awslocal lambda create-function \
     --query 'FunctionArn' \
     --output text)
 
+echo "Create the Lambda function  InsertMovie"
+LAMBDA_INSERT_ARN=$(awslocal lambda create-function \
+    --function-name  InsertMovie \
+    --runtime provided.al2023 \
+    --handler bootstrap \
+    --role arn:aws:iam::000000000000:role/AssalamualaikumServerlessRole \
+    --code S3Bucket=assalamualaikum-serverless-go-bucket,S3Key=insert/deployment.zip \
+    --query 'FunctionArn' \
+    --output text)
+
 echo "Create the API with Regional Endpoint Configuration"
 API_ID=$(awslocal apigateway create-rest-api \
     --name 'MoviesAPI' \
@@ -55,7 +68,7 @@ ROOT_RESOURCE_ID=$(awslocal apigateway get-resources \
     --output text)
 
 echo "Create a new resource with a path parameter (e.g., "/movies")"
-FIND_ALL_RESOURCE_ID=$(awslocal apigateway create-resource \
+MOVIES_RESOURCE_ID=$(awslocal apigateway create-resource \
     --rest-api-id $API_ID \
     --parent-id $ROOT_RESOURCE_ID \
     --path-part movies \
@@ -63,9 +76,9 @@ FIND_ALL_RESOURCE_ID=$(awslocal apigateway create-resource \
     --output text)
 
 echo "Create a new resource with a path parameter (e.g., "/movies/{id}")"
-FIND_ONE_RESOURCE_ID=$(awslocal apigateway create-resource \
+CHILD_MOVIE_RESOURCE_ID=$(awslocal apigateway create-resource \
     --rest-api-id $API_ID \
-    --parent-id $FIND_ALL_RESOURCE_ID \
+    --parent-id $MOVIES_RESOURCE_ID \
     --path-part {id} \
     --query 'id' \
     --output text)
@@ -73,21 +86,28 @@ FIND_ONE_RESOURCE_ID=$(awslocal apigateway create-resource \
 echo "Create a method GET for the resource /movies"
 awslocal apigateway put-method \
     --rest-api-id $API_ID \
-    --resource-id $FIND_ALL_RESOURCE_ID \
+    --resource-id $MOVIES_RESOURCE_ID \
     --http-method GET \
     --authorization-type "NONE"
 
 echo "Create a method GET for the resource /movies/{id}"
 awslocal apigateway put-method \
     --rest-api-id $API_ID \
-    --resource-id $FIND_ONE_RESOURCE_ID \
+    --resource-id $CHILD_MOVIE_RESOURCE_ID \
     --http-method GET \
+    --authorization-type "NONE"
+
+echo "Create a method POST for the resource /movies"
+awslocal apigateway put-method \
+    --rest-api-id $API_ID \
+    --resource-id $MOVIES_RESOURCE_ID \
+    --http-method POST \
     --authorization-type "NONE"
 
 echo "Integrate the method with the Lambda function FindAllMovies"
 awslocal apigateway put-integration \
     --rest-api-id $API_ID \
-    --resource-id $FIND_ALL_RESOURCE_ID \
+    --resource-id $MOVIES_RESOURCE_ID \
     --http-method GET \
     --type AWS_PROXY \
     --integration-http-method POST \
@@ -96,11 +116,20 @@ awslocal apigateway put-integration \
 echo "Integrate the method with the Lambda function FindOneMovie"
 awslocal apigateway put-integration \
     --rest-api-id $API_ID \
-    --resource-id $FIND_ONE_RESOURCE_ID \
+    --resource-id $CHILD_MOVIE_RESOURCE_ID \
     --http-method GET \
     --type AWS_PROXY \
     --integration-http-method POST \
     --uri arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/$LAMBDA_FIND_ONE_ARN/invocations
+
+echo "Integrate the method with the Lambda function InsertMovie"
+awslocal apigateway put-integration \
+    --rest-api-id $API_ID \
+    --resource-id $MOVIES_RESOURCE_ID \
+    --http-method POST \
+    --type AWS_PROXY \
+    --integration-http-method POST \
+    --uri arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/$LAMBDA_INSERT_ARN/invocations
 
 echo "Deploy the API"
 awslocal apigateway create-deployment \

@@ -228,12 +228,43 @@ awslocal lambda invoke \
 ```
 
 
-# Test API Invoke
+# Invoke Lambda InsertMovie
 
+### With Localstack
 ```shell
-curl -sX GET http://z5dzspvbaf.execute-api.localhost.localstack.cloud:4566/staging/movies | jq
+awslocal lambda invoke \
+    --function-name InsertMovie \
+    --cli-binary-format raw-in-base64-out \
+    --payload '{"body": "{\"id\":6,\"name\":\"Sword Art Online\"}"}' \
+    response.json
+```
+
+### Without Localstack
+```shell
+awslocal lambda invoke \
+    --function-name InsertMovie \
+    --cli-binary-format raw-in-base64-out \
+    --payload '{"id":6,"name":"Sword Art Online"}"}' \
+    response.json
 ```
 
 ```shell
-curl -sX GET http://z5dzspvbaf.execute-api.localhost.localstack.cloud:4566/staging/movies/1 | jq
+awslocal logs tail /aws/lambda/InsertMovie --follow
+```
+
+
+# Test API Invoke
+
+```shell
+curl -sX GET http://my7eu6wge7.execute-api.localhost.localstack.cloud:4566/staging/movies | jq
+```
+
+```shell
+curl -sX GET http://my7eu6wge7.execute-api.localhost.localstack.cloud:4566/staging/movies | jq
+```
+
+```shell
+curl -sX POST -d '{"body": "{\"id\":6,\"name\":\"Sword Art Online\"}"}' http://my7eu6wge7.execute-api.localhost.localstack.cloud:4566/staging/movies | jq
+
+curl -sX POST -d '{"body": "{\"id\":7,\"name\":\"No Game No Life\"}"}' http://my7eu6wge7.execute-api.localhost.localstack.cloud:4566/staging/movies | jq
 ```
