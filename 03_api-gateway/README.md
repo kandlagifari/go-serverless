@@ -244,7 +244,7 @@ awslocal lambda invoke \
 awslocal lambda invoke \
     --function-name InsertMovie \
     --cli-binary-format raw-in-base64-out \
-    --payload '{"id":6,"name":"Sword Art Online"}"}' \
+    --payload '{"id":6,"name":"Sword Art Online"}' \
     response.json
 ```
 

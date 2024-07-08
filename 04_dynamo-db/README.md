@@ -26,12 +26,41 @@ awslocal lambda invoke \
 ```
 
 
+# Invoke Lambda InsertMovie
+
+### With Localstack
+```shell
+awslocal lambda invoke \
+    --function-name InsertMovie \
+    --cli-binary-format raw-in-base64-out \
+    --payload '{"body": "{\"id\":\"16\",\"name\":\"Sword Art Online\"}"}' \
+    response.json
+```
+
+### Without Localstack
+```shell
+awslocal lambda invoke \
+    --function-name InsertMovie \
+    --cli-binary-format raw-in-base64-out \
+    --payload '{"id":"16","name":"Sword Art Online"}' \
+    response.json
+```
+
+
 # Test API findAll
 
 ```shell
-curl -sX GET http://jcvotpdt92.execute-api.localhost.localstack.cloud:4566/staging/movies | jq '.'
+curl -sX GET http://chrj8u8qcc.execute-api.localhost.localstack.cloud:4566/staging/movies | jq '.'
 ```
 
 ```shell
-curl -sX GET http://jcvotpdt92.execute-api.localhost.localstack.cloud:4566/staging/movies/3 | jq '.'
+curl -sX GET http://chrj8u8qcc.execute-api.localhost.localstack.cloud:4566/staging/movies/16 | jq '.'
+```
+
+```shell
+curl -sX POST -d '{"id":"16","name":"Sword Art Online"}' http://chrj8u8qcc.execute-api.localhost.localstack.cloud:4566/staging/movies | jq
+
+curl -sX POST -d '{"body": "{\"id\":\"16\",\"name\":\"Sword Art Online\"}"}' http://chrj8u8qcc.execute-api.localhost.localstack.cloud:4566/staging/movies | jq
+
+curl -sX POST -d '{"body": "{\"id\":\"17\",\"name\":\"No Game No Life\"}"}' http://chrj8u8qcc.execute-api.localhost.localstack.cloud:4566/staging/movies | jq
 ```
