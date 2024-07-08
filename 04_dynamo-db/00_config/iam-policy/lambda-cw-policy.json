@@ -19,6 +19,12 @@
         "arn:aws:dynamodb:us-east-1:000000000000:table/movies/index/ID",
         "arn:aws:dynamodb:us-east-1:000000000000:table/movies"
       ]
-    }
+    },
+    {
+      "Sid": "GetItemDynamoDB",
+      "Effect": "Allow",
+      "Action": "dynamodb:GetItem",
+      "Resource": "arn:aws:dynamodb:us-east-1:000000000000:table/movies"
+    } 
   ]
 }

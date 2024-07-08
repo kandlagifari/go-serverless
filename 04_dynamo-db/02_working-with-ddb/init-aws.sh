@@ -24,8 +24,8 @@ awslocal iam create-role \
 echo "Upload ZIP file findAll"
 awslocal s3 cp /opt/code/localstack/findAll/deployment.zip s3://assalamualaikum-serverless-go-bucket/findAll/deployment.zip
 
-# echo "Upload ZIP file findOne"
-# awslocal s3 cp /opt/code/localstack/findOne/deployment.zip s3://assalamualaikum-serverless-go-bucket/findOne/deployment.zip
+echo "Upload ZIP file findOne"
+awslocal s3 cp /opt/code/localstack/findOne/deployment.zip s3://assalamualaikum-serverless-go-bucket/findOne/deployment.zip
 
 # echo "Upload ZIP file insert"
 # awslocal s3 cp /opt/code/localstack/insert/deployment.zip s3://assalamualaikum-serverless-go-bucket/insert/deployment.zip
@@ -42,15 +42,17 @@ LAMBDA_FIND_ALL_ARN=$(awslocal lambda create-function \
     --query 'FunctionArn' \
     --output text)
 
-# echo "Create the Lambda function FindOneMovie"
-# LAMBDA_FIND_ONE_ARN=$(awslocal lambda create-function \
-#     --function-name FindOneMovie \
-#     --runtime provided.al2023 \
-#     --handler bootstrap \
-#     --role arn:aws:iam::000000000000:role/AssalamualaikumServerlessRole \
-#     --code S3Bucket=assalamualaikum-serverless-go-bucket,S3Key=findOne/deployment.zip \
-#     --query 'FunctionArn' \
-#     --output text)
+echo "Create the Lambda function FindOneMovie"
+LAMBDA_FIND_ONE_ARN=$(awslocal lambda create-function \
+    --function-name FindOneMovie \
+    --runtime provided.al2023 \
+    --handler bootstrap \
+    --environment Variables={TABLE_NAME=movies} \
+    --timeout 120 \
+    --role arn:aws:iam::000000000000:role/AssalamualaikumServerlessRole \
+    --code S3Bucket=assalamualaikum-serverless-go-bucket,S3Key=findOne/deployment.zip \
+    --query 'FunctionArn' \
+    --output text)
 
 # echo "Create the Lambda function  InsertMovie"
 # LAMBDA_INSERT_ARN=$(awslocal lambda create-function \
@@ -84,13 +86,13 @@ MOVIES_RESOURCE_ID=$(awslocal apigateway create-resource \
     --query 'id' \
     --output text)
 
-# echo "Create a new resource with a path parameter (e.g., "/movies/{id}")"
-# CHILD_MOVIE_RESOURCE_ID=$(awslocal apigateway create-resource \
-#     --rest-api-id $API_ID \
-#     --parent-id $MOVIES_RESOURCE_ID \
-#     --path-part {id} \
-#     --query 'id' \
-#     --output text)
+echo "Create a new resource with a path parameter (e.g., "/movies/{id}")"
+CHILD_MOVIE_RESOURCE_ID=$(awslocal apigateway create-resource \
+    --rest-api-id $API_ID \
+    --parent-id $MOVIES_RESOURCE_ID \
+    --path-part {id} \
+    --query 'id' \
+    --output text)
 
 echo "Create a method GET for the resource /movies"
 awslocal apigateway put-method \
@@ -99,12 +101,12 @@ awslocal apigateway put-method \
     --http-method GET \
     --authorization-type "NONE"
 
-# echo "Create a method GET for the resource /movies/{id}"
-# awslocal apigateway put-method \
-#     --rest-api-id $API_ID \
-#     --resource-id $CHILD_MOVIE_RESOURCE_ID \
-#     --http-method GET \
-#     --authorization-type "NONE"
+echo "Create a method GET for the resource /movies/{id}"
+awslocal apigateway put-method \
+    --rest-api-id $API_ID \
+    --resource-id $CHILD_MOVIE_RESOURCE_ID \
+    --http-method GET \
+    --authorization-type "NONE"
 
 # echo "Create a method POST for the resource /movies"
 # awslocal apigateway put-method \
@@ -122,14 +124,14 @@ awslocal apigateway put-integration \
     --integration-http-method POST \
     --uri arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/$LAMBDA_FIND_ALL_ARN/invocations
 
-# echo "Integrate the method with the Lambda function FindOneMovie"
-# awslocal apigateway put-integration \
-#     --rest-api-id $API_ID \
-#     --resource-id $CHILD_MOVIE_RESOURCE_ID \
-#     --http-method GET \
-#     --type AWS_PROXY \
-#     --integration-http-method POST \
-#     --uri arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/$LAMBDA_FIND_ONE_ARN/invocations
+echo "Integrate the method with the Lambda function FindOneMovie"
+awslocal apigateway put-integration \
+    --rest-api-id $API_ID \
+    --resource-id $CHILD_MOVIE_RESOURCE_ID \
+    --http-method GET \
+    --type AWS_PROXY \
+    --integration-http-method POST \
+    --uri arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/$LAMBDA_FIND_ONE_ARN/invocations
 
 # echo "Integrate the method with the Lambda function InsertMovie"
 # awslocal apigateway put-integration \

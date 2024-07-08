@@ -1,3 +1,5 @@
+> **_IMPORTANT NOTE:_** Make sure to run always run `init_db.go` whenever creating new localstack environment (via docker compose)
+
 # Create Dynamo DB
 
 ```shell
@@ -27,5 +29,9 @@ awslocal lambda invoke \
 # Test API findAll
 
 ```shell
-curl -sX GET http://nocjbsl9m0.execute-api.localhost.localstack.cloud:4566/staging/movies | jq '.'
+curl -sX GET http://jcvotpdt92.execute-api.localhost.localstack.cloud:4566/staging/movies | jq '.'
+```
+
+```shell
+curl -sX GET http://jcvotpdt92.execute-api.localhost.localstack.cloud:4566/staging/movies/3 | jq '.'
 ```
