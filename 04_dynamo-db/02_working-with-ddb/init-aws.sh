@@ -30,6 +30,9 @@ awslocal s3 cp /opt/code/localstack/findOne/deployment.zip s3://assalamualaikum-
 echo "Upload ZIP file insert"
 awslocal s3 cp /opt/code/localstack/insert/deployment.zip s3://assalamualaikum-serverless-go-bucket/insert/deployment.zip
 
+echo "Upload ZIP file delete"
+awslocal s3 cp /opt/code/localstack/delete/deployment.zip s3://assalamualaikum-serverless-go-bucket/delete/deployment.zip
+
 echo "Create the Lambda function FindAllMovies"
 LAMBDA_FIND_ALL_ARN=$(awslocal lambda create-function \
     --function-name FindAllMovies \
@@ -56,13 +59,25 @@ LAMBDA_FIND_ONE_ARN=$(awslocal lambda create-function \
 
 echo "Create the Lambda function  InsertMovie"
 LAMBDA_INSERT_ARN=$(awslocal lambda create-function \
-    --function-name  InsertMovie \
+    --function-name InsertMovie \
     --runtime provided.al2023 \
     --handler bootstrap \
     --environment Variables={TABLE_NAME=movies} \
     --timeout 120 \
     --role arn:aws:iam::000000000000:role/AssalamualaikumServerlessRole \
     --code S3Bucket=assalamualaikum-serverless-go-bucket,S3Key=insert/deployment.zip \
+    --query 'FunctionArn' \
+    --output text)
+
+echo "Create the Lambda function  DeleteMovie"
+LAMBDA_DELETE_ARN=$(awslocal lambda create-function \
+    --function-name DeleteMovie \
+    --runtime provided.al2023 \
+    --handler bootstrap \
+    --environment Variables={TABLE_NAME=movies} \
+    --timeout 120 \
+    --role arn:aws:iam::000000000000:role/AssalamualaikumServerlessRole \
+    --code S3Bucket=assalamualaikum-serverless-go-bucket,S3Key=delete/deployment.zip \
     --query 'FunctionArn' \
     --output text)
 
@@ -117,6 +132,13 @@ awslocal apigateway put-method \
     --http-method POST \
     --authorization-type "NONE"
 
+echo "Create a method DELETE for the resource /movies"
+awslocal apigateway put-method \
+    --rest-api-id $API_ID \
+    --resource-id $MOVIES_RESOURCE_ID \
+    --http-method DELETE \
+    --authorization-type "NONE"
+
 echo "Integrate the method with the Lambda function FindAllMovies"
 awslocal apigateway put-integration \
     --rest-api-id $API_ID \
@@ -143,6 +165,23 @@ awslocal apigateway put-integration \
     --type AWS_PROXY \
     --integration-http-method POST \
     --uri arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/$LAMBDA_INSERT_ARN/invocations
+
+echo "Integrate the method with the Lambda function DeleteMovie"
+awslocal apigateway put-integration \
+    --rest-api-id $API_ID \
+    --resource-id $MOVIES_RESOURCE_ID \
+    --http-method DELETE \
+    --type AWS_PROXY \
+    --integration-http-method POST \
+    --uri arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/$LAMBDA_DELETE_ARN/invocations
+
+echo "Keep the Lambda function DeleteMovie response without modification"
+awslocal apigateway put-method-response \
+    --rest-api-id $API_ID \
+    --resource-id $MOVIES_RESOURCE_ID \
+    --http-method DELETE \
+    --status-code 200 \
+    --response-models '{"application/json": "Empty"}'
 
 echo "Deploy the API"
 awslocal apigateway create-deployment \
