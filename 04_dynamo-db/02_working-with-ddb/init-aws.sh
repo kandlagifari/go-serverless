@@ -175,17 +175,17 @@ awslocal apigateway put-integration \
     --integration-http-method POST \
     --uri arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/$LAMBDA_DELETE_ARN/invocations
 
-echo "Keep the Lambda function DeleteMovie response without modification"
-awslocal apigateway put-method-response \
-    --rest-api-id $API_ID \
-    --resource-id $MOVIES_RESOURCE_ID \
-    --http-method DELETE \
-    --status-code 200 \
-    --response-models '{"application/json": "Empty"}'
-
 echo "Deploy the API"
 awslocal apigateway create-deployment \
     --rest-api-id $API_ID \
     --stage-name staging
 
+echo "Endpoint for Local Testing"
 echo "http://$API_ID.execute-api.localhost.localstack.cloud:4566/staging/movies"
+
+echo ""
+echo "========================================================================="
+echo ""
+
+echo "Endpoint for Remote Testing"
+echo "http://localhost:4566/restapis/$API_ID/staging/_user_request_/movies"

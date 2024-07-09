@@ -69,7 +69,7 @@ func delete(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespon
 		}, nil
 	}
 
-	log.Printf("Received movie to insert: %+v", movie)
+	log.Printf("Received movie to delete: %+v", movie)
 
 	// Load AWS configuration
 	cfg, err := config.LoadDefaultConfig(context.TODO(),

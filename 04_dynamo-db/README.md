@@ -50,27 +50,31 @@ awslocal lambda invoke \
 # Test API Gateway
 
 ```shell
-curl -sX GET http://jq0ynbeq36.execute-api.localhost.localstack.cloud:4566/staging/movies | jq '.'
+curl -sX GET http://v7oc56givg.execute-api.localhost.localstack.cloud:4566/staging/movies | jq '.'
 ```
 
 ```shell
-curl -sX GET http://jq0ynbeq36.execute-api.localhost.localstack.cloud:4566/staging/movies/16 | jq '.'
+curl -sX GET http://localhost:4566/restapis/v7oc56givg/staging/_user_request_/movies | jq '.'
 ```
 
 ```shell
-curl -sX POST -d '{"id":"16","name":"Sword Art Online"}' http://jq0ynbeq36.execute-api.localhost.localstack.cloud:4566/staging/movies | jq
-
-curl -sX POST -d '{"body": "{\"id\":\"16\",\"name\":\"Sword Art Online\"}"}' http://jq0ynbeq36.execute-api.localhost.localstack.cloud:4566/staging/movies | jq
-
-curl -sX POST -d '{"body": "{\"id\":\"17\",\"name\":\"No Game No Life\"}"}' http://jq0ynbeq36.execute-api.localhost.localstack.cloud:4566/staging/movies | jq
+curl -sX GET http://v7oc56givg.execute-api.localhost.localstack.cloud:4566/staging/movies/16 | jq '.'
 ```
 
 ```shell
-curl -sX DELETE -d '{"id":"16","name":"Sword Art Online"}' http://jq0ynbeq36.execute-api.localhost.localstack.cloud:4566/staging/movies | jq
+curl -sX POST -d '{"id":"16","name":"Sword Art Online"}' http://v7oc56givg.execute-api.localhost.localstack.cloud:4566/staging/movies | jq
 
-curl -sX DELETE -d '{"body": "{\"id\":\"16\",\"name\":\"Sword Art Online\"}"}' http://jq0ynbeq36.execute-api.localhost.localstack.cloud:4566/staging/movies | jq
+curl -sX POST -d '{"body": "{\"id\":\"16\",\"name\":\"Sword Art Online\"}"}' http://v7oc56givg.execute-api.localhost.localstack.cloud:4566/staging/movies | jq
 
-curl -sX DELETE -d '{"body": "{\"id\":\"16\"}"}' http://jq0ynbeq36.execute-api.localhost.localstack.cloud:4566/staging/movies | jq
+curl -sX POST -d '{"body": "{\"id\":\"17\",\"name\":\"No Game No Life\"}"}' http://v7oc56givg.execute-api.localhost.localstack.cloud:4566/staging/movies | jq
+```
 
-curl -sX DELETE -d '{"body": "{\"id\":\"17\",\"name\":\"No Game No Life\"}"}' http://jq0ynbeq36.execute-api.localhost.localstack.cloud:4566/staging/movies | jq
+```shell
+curl -sX DELETE -d '{"id":"16","name":"Sword Art Online"}' http://v7oc56givg.execute-api.localhost.localstack.cloud:4566/staging/movies | jq
+
+curl -sX DELETE -d '{"body": "{\"id\":\"16\",\"name\":\"Sword Art Online\"}"}' http://v7oc56givg.execute-api.localhost.localstack.cloud:4566/staging/movies | jq
+
+curl -sX DELETE -d '{"body": "{\"id\":\"16\"}"}' http://v7oc56givg.execute-api.localhost.localstack.cloud:4566/staging/movies | jq
+
+curl -sX DELETE -d '{"body": "{\"id\":\"17\",\"name\":\"No Game No Life\"}"}' http://v7oc56givg.execute-api.localhost.localstack.cloud:4566/staging/movies | jq
 ```
