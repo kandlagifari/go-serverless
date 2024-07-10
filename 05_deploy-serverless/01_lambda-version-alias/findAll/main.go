@@ -1,0 +1,102 @@
+package main
+
+import (
+	"context"
+	"encoding/json"
+	"fmt"
+	"log"
+	"net/http"
+	"os"
+	"strconv"
+
+	"github.com/aws/aws-lambda-go/events"
+	"github.com/aws/aws-lambda-go/lambda"
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/config"
+	"github.com/aws/aws-sdk-go-v2/feature/dynamodb/attributevalue"
+	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
+)
+
+type Movie struct {
+	ID   string `json:"id"`
+	Name string `json:"name"`
+}
+
+func findAll(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+	log.Printf("Received request: %+v", request)
+	log.Printf("Request headers: %s", request.Headers)
+
+	size, err := strconv.Atoi(request.Headers["Count"])
+	if err != nil {
+		return events.APIGatewayProxyResponse{
+			StatusCode: http.StatusBadRequest,
+			Body:       "Count Header should be a number",
+		}, nil
+	}
+
+	cfg, err := config.LoadDefaultConfig(context.TODO(),
+		config.WithRegion("us-east-1"),
+		config.WithEndpointResolver(aws.EndpointResolverFunc(
+			func(service, region string) (aws.Endpoint, error) {
+				if service == dynamodb.ServiceID && region == "us-east-1" {
+					return aws.Endpoint{
+						URL:           "http://localstack:4566", // LocalStack endpoint
+						SigningRegion: "us-east-1",
+					}, nil
+				}
+				return aws.Endpoint{}, &aws.EndpointNotFoundError{}
+			}),
+		),
+	)
+	if err != nil {
+		return events.APIGatewayProxyResponse{
+			StatusCode: http.StatusInternalServerError,
+			Body:       fmt.Sprintf("Error while retrieving AWS credentials: %v", err),
+		}, nil
+	}
+
+	svc := dynamodb.NewFromConfig(cfg)
+	res, err := svc.Scan(context.TODO(), &dynamodb.ScanInput{
+		TableName: aws.String(os.Getenv("TABLE_NAME")),
+		Limit:     aws.Int32(int32(size)),
+	})
+	if err != nil {
+		return events.APIGatewayProxyResponse{
+			StatusCode: http.StatusInternalServerError,
+			Body:       fmt.Sprintf("Error while scanning DynamoDB: %v", err),
+		}, nil
+	}
+
+	movies := make([]Movie, 0)
+	for _, item := range res.Items {
+		movie := Movie{}
+		err = attributevalue.UnmarshalMap(item, &movie)
+		if err != nil {
+			return events.APIGatewayProxyResponse{
+				StatusCode: http.StatusInternalServerError,
+				Body:       fmt.Sprintf("Error while unmarshalling DynamoDB item: %v", err),
+			}, nil
+		}
+		movies = append(movies, movie)
+	}
+
+	response, err := json.Marshal(movies)
+	if err != nil {
+		return events.APIGatewayProxyResponse{
+			StatusCode: http.StatusInternalServerError,
+			Body:       fmt.Sprintf("Error while encoding response to JSON: %v", err),
+		}, nil
+	}
+
+	return events.APIGatewayProxyResponse{
+		StatusCode: http.StatusOK,
+		Headers: map[string]string{
+			"Content-Type": "application/json",
+		},
+		Body: string(response),
+	}, nil
+}
+
+func main() {
+	lambda.Start(findAll)
+}
