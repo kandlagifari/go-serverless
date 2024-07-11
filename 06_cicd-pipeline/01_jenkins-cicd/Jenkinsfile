@@ -31,7 +31,8 @@ pipeline {
     }
     stage('Test') {
       steps {
-        dir(${WORKDIR}) {
+        dir('${WORKDIR}') {
+          sh 'ls -ltr'
           sh 'go get -u github.com/golang/lint/golint'
           sh 'go get -t ./...'
           sh 'golint -set_exit_status'
@@ -42,7 +43,7 @@ pipeline {
     }
     stage('Build') {
       steps {
-        dir(${WORKDIR}) {
+        dir('${WORKDIR}') {
           sh ''
           sh 'GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o bootstrap main.go'
           sh "zip ${GIT_COMMIT}.zip bootstrap"
@@ -51,7 +52,7 @@ pipeline {
     }
     stage('Push') {
       steps {
-        dir(${WORKDIR}) {
+        dir('${WORKDIR}') {
           sh "aws s3 cp ${GIT_COMMIT}.zip s3://${BUCKET} --endpoint-url=${LOCALSTACK_ENDPOINT}"
           sh "aws s3 ls s3://${BUCKET} --endpoint-url=${LOCALSTACK_ENDPOINT}"
         }
@@ -59,7 +60,7 @@ pipeline {
     }
     stage('Deploy') {
       steps {
-        dir(${WORKDIR}) {
+        dir('${WORKDIR}') {
           sh "aws lambda update-function-code \
             --function-name FindAllMovies \
             --s3-bucket ${BUCKET} \
