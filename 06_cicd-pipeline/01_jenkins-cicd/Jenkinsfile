@@ -8,14 +8,24 @@ pipeline {
       steps {
         git branch: 'main', credentialsId: 'github-credentials', url: 'https://github.com/kandlagifari/go-serverless.git'
         script {
-            GIT_COMMIT_HASH = sh (script: "git log -n 1 --pretty=format:'%H'", returnStdout: true)
+          def scmVars = checkout([$class: 'GitSCM',
+            branches: scm.branches,
+            doGenerateSubmoduleConfigurations: scm.doGenerateSubmoduleConfigurations,
+            extensions: scm.extensions + [
+              [$class: 'LocalBranch'],
+              [$class: 'CloneOption', noTags: false],
+              pruneTags(true),
+            ],
+            submoduleCfg: scm.submoduleCfg,
+            userRemoteConfigs: scm.userRemoteConfigs
+          ])
+          env.GIT_COMMIT = scmVars.GIT_COMMIT
         }
       }
     }
     stage('Testing') {
       steps {
-            echo "Building on git commit = ${GIT_COMMIT}"
-        }
+        echo "Building on git commit = ${GIT_COMMIT}"
       }
     }
     // stage('Testing 1') {
