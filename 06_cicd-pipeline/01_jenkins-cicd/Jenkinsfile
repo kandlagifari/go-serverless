@@ -1,7 +1,13 @@
 pipeline {
   agent any
+  tools {
+    go 'go'
+  }
   environment {
+    WORKDIR = './06_cicd-pipeline/01_jenkins-cicd/findAll'
     BUCKET = 'assalamualaikum-serverless-go-bucket'
+    LOCALSTACK_ENDPOINT = 'http://localstack:4566'
+    AWS_REGION = 'us-east-1'
   }
   stages {
     stage('Git Checkout') {
@@ -23,30 +29,45 @@ pipeline {
         }
       }
     }
-    stage('Testing') {
+    stage('Test') {
       steps {
-        echo "Building on git commit = ${GIT_COMMIT}"
+        dir('${WORKDIR}') {
+          sh 'go get -u github.com/golang/lint/golint'
+          sh 'go get -t ./...'
+          sh 'golint -set_exit_status'
+          sh 'go vet .'
+          sh 'go test .'
+        }
       }
     }
-    // stage('Testing 1') {
-    //   steps {
-    //     dir('./06_cicd-pipeline/01_jenkins-cicd/findAll') {
-    //         sh 'go get -u github.com/golang/lint/golint'
-    //         sh 'go get -t ./...'
-    //         sh 'golint -set_exit_status'
-    //         sh 'go vet .'
-    //         sh 'go test .'
-    //     }
-    //   }
-    // }
-    // stage('Testing 2') {
-    //   steps {
-    //     dir('./06_cicd-pipeline/01_jenkins-cicd/findAll') {
-    //         sh ''
-    //         sh 'GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o bootstrap main.go'
-    //         sh "zip ${commitID()}.zip bootstrap"
-    //     }
-    //   }
-    // }
+    stage('Build') {
+      steps {
+        dir('${WORKDIR}') {
+          sh ''
+          sh 'GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o bootstrap main.go'
+          sh "zip ${GIT_COMMIT}.zip bootstrap"
+        }
+      }
+    }
+    stage('Push') {
+      steps {
+        dir('${WORKDIR}') {
+          sh "aws s3 cp ${GIT_COMMIT}.zip s3://${BUCKET} --endpoint-url=${LOCALSTACK_ENDPOINT}"
+          sh "aws s3 ls s3://${BUCKET} --endpoint-url=${LOCALSTACK_ENDPOINT}"
+        }
+      }
+    }
+    stage('Deploy') {
+      steps {
+        dir('${WORKDIR}') {
+          sh "aws lambda update-function-code \
+            --function-name FindAllMovies \
+            --s3-bucket ${BUCKET} \
+            --s3-key ${GIT_COMMIT}.zip \
+            --region ${AWS_REGION} \
+            --endpoint-url=${LOCALSTACK_ENDPOINT}"
+        }
+      }
+    }
   }
 }
