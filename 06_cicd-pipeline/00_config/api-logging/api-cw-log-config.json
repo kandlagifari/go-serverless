@@ -1,0 +1,19 @@
+{
+  "patchOperations": [
+    {
+      "op": "replace",
+      "path": "/accessLogSettings/format",
+      "value": "{ \"requestId\": \"$context.requestId\", \"ip\": \"$context.identity.sourceIp\", \"caller\": \"$context.identity.caller\", \"requestTime\": \"$context.requestTimeEpoch\", \"httpMethod\": \"$context.httpMethod\", \"resourcePath\": \"$context.resourcePath\", \"status\": \"$context.status\", \"protocol\": \"$context.protocol\", \"responseLength\": \"$context.responseLength\" }"
+    },
+    {
+      "op": "replace",
+      "path": "/accessLogSettings/loggingLevel",
+      "value": "ERROR"
+    },
+    {
+      "op": "replace",
+      "path": "/accessLogSettings/destinationArn",
+      "value": "arn:aws:logs:us-east-1:000000000000:log-group:/aws/apigateway/hb1goz0llm/accessLogs"
+    }
+  ]
+}

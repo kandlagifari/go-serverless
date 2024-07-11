@@ -1,0 +1,36 @@
+def bucket = 'assalamualaikum-serverless-go-bucket'
+
+node('slave-golang'){
+    stage('Checkout'){
+        checkout scm
+    }
+    stage('Test'){
+        sh 'go get -u github.com/golang/lint/golint'
+        sh 'go get -t ./...'
+        sh 'golint -set_exit_status'
+        sh 'go vet .'
+        sh 'go test .'
+    }
+    stage('Build'){
+        sh ''
+        sh 'GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o bootstrap main.go'
+        sh "zip ${commitID()}.zip bootstrap"
+    }
+    stage('Push'){
+        sh "aws s3 cp ${commitID()}.zip s3://${bucket} --endpoint-url=http://localstack:4566"
+    }
+    stage('Deploy'){
+        sh "aws lambda update-function-code --function-name FindAllMovies \
+        --s3-bucket ${bucket} \
+        --s3-key ${commitID()}.zip \
+        --endpoint-url=http://localstack:4566 \
+        --region us-east-1"
+    }
+}
+
+def commitID() {
+    sh 'git rev-parse HEAD > .git/commitID'
+    def commitID = readFile('.git/commitID').trim()
+    sh 'rm .git/commitID'
+    commitID
+}
