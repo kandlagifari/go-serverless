@@ -31,6 +31,7 @@ pipeline {
     stage('Test') {
       steps {
         dir('./06_cicd-pipeline/01_jenkins-cicd/findAll') {
+          sh 'go clean -modcache'
           sh 'go get -u github.com/golang/lint/golint'
           sh 'go get -t ./...'
           sh 'golint -set_exit_status'
