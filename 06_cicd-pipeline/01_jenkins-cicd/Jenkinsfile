@@ -12,16 +12,14 @@ pipeline {
     stage('Testing 1') {
       steps {
         sh "ls && pwd"
-        sh "cd ./06_cicd-pipeline/01_jenkins-cicd/findAll"
-        sh "ls && pwd"
+        sh "cd ./06_cicd-pipeline/01_jenkins-cicd/findAll && ls && pwd"
       }
     }
     stage('Testing 2') {
       steps {
         sh "aws s3 ls s3://$BUCKET --endpoint-url=http://localstack:4566"
         sh "ls && pwd"
-        sh "cd ./06_cicd-pipeline/01_jenkins-cicd/findAll"
-        sh "ls && pwd"
+        sh "cd ./06_cicd-pipeline/01_jenkins-cicd/findAll && ls && pwd"
       }
     }
   }
