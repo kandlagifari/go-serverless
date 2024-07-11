@@ -7,26 +7,47 @@ pipeline {
     stage('Git Checkout') {
       steps {
         git branch: 'main', credentialsId: 'github-credentials', url: 'https://github.com/kandlagifari/go-serverless.git'
-      }
-    }
-    stage('Testing 1') {
-      steps {
-        sh "ls && pwd"
-        dir('./06_cicd-pipeline/01_jenkins-cicd/findAll') {
-            sh "ls && pwd"
+        script {
+            def scmVars = checkout([$class: 'GitSCM',
+                      branches: scm.branches,
+                      doGenerateSubmoduleConfigurations: scm.doGenerateSubmoduleConfigurations,
+                      extensions: scm.extensions + [
+                              [$class: 'LocalBranch'],
+                              [$class: 'CloneOption', noTags: false],
+                              pruneTags(true),
+                      ],
+                      submoduleCfg: scm.submoduleCfg,
+                      userRemoteConfigs: scm.userRemoteConfigs
+            ])
+            env.GIT_COMMIT = scmVars.GIT_COMMIT
         }
-        sh "ls && pwd"
       }
     }
-    stage('Testing 2') {
+    stage('Testing') {
       steps {
-        sh "aws s3 ls s3://$BUCKET --endpoint-url=http://localstack:4566"
-        sh "ls && pwd"
-        dir('./06_cicd-pipeline/01_jenkins-cicd/findAll') {
-            sh "ls && pwd"
+            echo "Building on git commit = ${GIT_COMMIT}"
         }
-        sh "ls && pwd"
       }
     }
+    // stage('Testing 1') {
+    //   steps {
+    //     dir('./06_cicd-pipeline/01_jenkins-cicd/findAll') {
+    //         sh 'go get -u github.com/golang/lint/golint'
+    //         sh 'go get -t ./...'
+    //         sh 'golint -set_exit_status'
+    //         sh 'go vet .'
+    //         sh 'go test .'
+    //     }
+    //   }
+    // }
+    // stage('Testing 2') {
+    //   steps {
+    //     dir('./06_cicd-pipeline/01_jenkins-cicd/findAll') {
+    //         sh ''
+    //         sh 'GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o bootstrap main.go'
+    //         sh "zip ${commitID()}.zip bootstrap"
+    //     }
+    //   }
+    // }
   }
 }
