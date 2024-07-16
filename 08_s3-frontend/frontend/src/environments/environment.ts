@@ -5,6 +5,6 @@
 
 export const environment = {
   production: false,
-  api: 'http://localhost:4566/restapis/j6fdx09772/staging/_user_request_/movies'
+  api: 'http://localhost:4566/restapis/j6fdx09772/staging/_user_request_/movies' // Change localhost with Public IP
 };
   

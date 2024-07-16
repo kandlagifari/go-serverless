@@ -1,7 +1,7 @@
 export class Movie {
-    private name: string;
-    private cover: string;
-    private description: string;
+    public name: string;
+    public cover: string;
+    public description: string;
 
     constructor(name: string, description: string, cover?: string){
         this.name = name;

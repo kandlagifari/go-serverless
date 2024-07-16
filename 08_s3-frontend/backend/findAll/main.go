@@ -7,7 +7,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"strconv"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
@@ -24,15 +23,15 @@ type Movie struct {
 
 func findAll(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	log.Printf("Received request: %+v", request)
-	log.Printf("Request headers: %s", request.Headers)
+	// log.Printf("Request headers: %s", request.Headers)
 
-	size, err := strconv.Atoi(request.Headers["Count"])
-	if err != nil {
-		return events.APIGatewayProxyResponse{
-			StatusCode: http.StatusBadRequest,
-			Body:       "Count Header should be a number",
-		}, nil
-	}
+	// size, err := strconv.Atoi(request.Headers["Count"])
+	// if err != nil {
+	// 	return events.APIGatewayProxyResponse{
+	// 		StatusCode: http.StatusBadRequest,
+	// 		Body:       "Count Header should be a number",
+	// 	}, nil
+	// }
 
 	cfg, err := config.LoadDefaultConfig(context.TODO(),
 		config.WithRegion("us-east-1"),
@@ -58,7 +57,7 @@ func findAll(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	svc := dynamodb.NewFromConfig(cfg)
 	res, err := svc.Scan(context.TODO(), &dynamodb.ScanInput{
 		TableName: aws.String(os.Getenv("TABLE_NAME")),
-		Limit:     aws.Int32(int32(size)),
+		// Limit:     aws.Int32(int32(size)),
 	})
 	if err != nil {
 		return events.APIGatewayProxyResponse{
@@ -91,7 +90,8 @@ func findAll(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	return events.APIGatewayProxyResponse{
 		StatusCode: http.StatusOK,
 		Headers: map[string]string{
-			"Content-Type": "application/json",
+			"Content-Type":                "application/json",
+			"Access-Control-Allow-Origin": "*",
 		},
 		Body: string(response),
 	}, nil

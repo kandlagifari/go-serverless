@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Movie } from '../../models/movie';
 import { MovieItemComponent } from '../movie-item/movie-item.component';
+import { MoviesApiService } from '../../services/movies-api.service';
 
 @Component({
   selector: 'list-movies',
@@ -14,17 +15,17 @@ export class ListMoviesComponent implements OnInit {
 
   public movies: Movie[];
 
-  constructor() {
-    this.movies = [
-      new Movie("Sousou no Frieren", "Some description",
-        "https://cdn.myanimelist.net/images/anime/1015/138006.jpg"),
-      new Movie("Steins;Gate", "Some description",
-        "https://cdn.myanimelist.net/images/anime/1935/127974.jpg"),
-      new Movie("Koe no Katachi", "Some description",
-        "https://cdn.myanimelist.net/images/anime/1122/96435.jpg")
-    ];
+  constructor(private moviesApiService: MoviesApiService) {
+    this.movies = []
+
+    this.moviesApiService.findAll().subscribe(res => {
+      res.forEach(movie => {
+        this.movies.push(new Movie(movie.name, movie.description, movie.cover))
+      })
+    })
   }
 
   ngOnInit() {
   }
+
 }
