@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { MovieItemComponent } from './components/movie-item/movie-item.component';
+import { ListMoviesComponent } from './components/list-movies/list-movies.component';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +10,8 @@ import { MovieItemComponent } from './components/movie-item/movie-item.component
   imports: [
     RouterOutlet,
     NavbarComponent,
-    MovieItemComponent
+    MovieItemComponent,
+    ListMoviesComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
