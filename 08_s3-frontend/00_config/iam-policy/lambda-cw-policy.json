@@ -1,0 +1,30 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "PushLogsToCloudWatch",
+      "Effect": "Allow",
+      "Action": [
+        "logs:CreateLogStream",
+        "logs:CreateLogGroup",
+        "logs:PutLogEvents"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ScanDynamoDB",
+      "Effect": "Allow",
+      "Action": "dynamodb:Scan",
+      "Resource": [
+        "arn:aws:dynamodb:us-east-1:000000000000:table/movies/index/ID",
+        "arn:aws:dynamodb:us-east-1:000000000000:table/movies"
+      ]
+    },
+    {
+      "Sid": "GetItemDynamoDB",
+      "Effect": "Allow",
+      "Action": "dynamodb:GetItem",
+      "Resource": "arn:aws:dynamodb:us-east-1:000000000000:table/movies"
+    } 
+  ]
+}
