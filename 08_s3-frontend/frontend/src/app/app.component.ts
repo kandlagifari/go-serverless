@@ -7,6 +7,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { MovieItemComponent } from './components/movie-item/movie-item.component';
 import { ListMoviesComponent } from './components/list-movies/list-movies.component';
 import { MoviesApiService } from './services/movies-api.service';
+import { NewMovieComponent } from './components/new-movie/new-movie.component'
 
 @Component({
   selector: 'app-root',
@@ -16,6 +17,7 @@ import { MoviesApiService } from './services/movies-api.service';
     NavbarComponent,
     MovieItemComponent,
     ListMoviesComponent,
+    NewMovieComponent,
     HttpClientModule
   ],
   providers: [

@@ -19,8 +19,10 @@ import (
 )
 
 type Movie struct {
-	ID   string `json:"id"`
-	Name string `json:"name"`
+	ID          string `json:"id"`
+	Name        string `json:"name"`
+	Cover       string `json:"cover"`
+	Description string `json:"description"`
 }
 
 func insert(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {

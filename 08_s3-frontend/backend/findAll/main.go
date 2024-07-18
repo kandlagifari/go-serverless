@@ -17,8 +17,10 @@ import (
 )
 
 type Movie struct {
-	ID   string `json:"id"`
-	Name string `json:"name"`
+	ID          string `json:"id"`
+	Name        string `json:"name"`
+	Cover       string `json:"cover"`
+	Description string `json:"description"`
 }
 
 func findAll(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
@@ -65,6 +67,9 @@ func findAll(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 			Body:       fmt.Sprintf("Error while scanning DynamoDB: %v", err),
 		}, nil
 	}
+
+	// Log the retrieved items to inspect their structure
+	log.Printf("Retrieved items: %+v", res.Items)
 
 	movies := make([]Movie, 0)
 	for _, item := range res.Items {

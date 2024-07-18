@@ -14,8 +14,10 @@ import (
 )
 
 type Movie struct {
-	ID   string
-	Name string
+	ID          string
+	Name        string
+	Cover       string
+	Description string
 }
 
 func main() {

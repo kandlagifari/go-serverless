@@ -1,62 +1,92 @@
 [
   {
     "id" : "1",
-    "name" : "Bleach: Sennen Kessen-hen"
+    "name" : "Bleach: Sennen Kessen-hen",
+    "cover" : "https://cdn.myanimelist.net/images/anime/1908/135431.jpg",
+    "description" : "Substitute Soul Reaper Ichigo Kurosaki spends his days fighting against Hollows, dangerous evil spirits that threaten Karakura Town. Ichigo carries out his quest with his closest allies: Orihime Inoue, his childhood friend with a talent for healing; Yasutora Sado, his high school classmate with superhuman strength; and Uryuu Ishida, Ichigo's Quincy rival."
   },
   {
     "id" : "2",
-    "name" : "Sousou no Frieren"
+    "name" : "Sousou no Frieren",
+    "cover" : "https://cdn.myanimelist.net/images/anime/1015/138006.jpg",
+    "description" : "During their decade-long quest to defeat the Demon King, the members of the hero's party—Himmel himself, the priest Heiter, the dwarf warrior Eisen, and the elven mage Frieren—forge bonds through adventures and battles, creating unforgettable precious memories for most of them."
   },
   {
     "id" : "3",
-    "name" : "Steins;Gate"
+    "name" : "Steins;Gate",
+    "cover" : "https://cdn.myanimelist.net/images/anime/1935/127974.jpg",
+    "description" : "Eccentric scientist Rintarou Okabe has a never-ending thirst for scientific exploration. Together with his ditzy but well-meaning friend Mayuri Shiina and his roommate Itaru Hashida, Okabe founds the Future Gadget Laboratory in the hopes of creating technological innovations that baffle the human psyche. Despite claims of grandeur, the only notable 'gadget' the trio have created is a microwave that has the mystifying power to turn bananas into green goo."
   },
   {
     "id" : "4",
-    "name" : "Koe no Katachi"
+    "name" : "Koe no Katachi",
+    "cover" : "https://cdn.myanimelist.net/images/anime/1122/96435.jpg",
+    "description" : "As a wild youth, elementary school student Shouya Ishida sought to beat boredom in the cruelest ways. When the deaf Shouko Nishimiya transfers into his class, Shouya and the rest of his class thoughtlessly bully her for fun. However, when her mother notifies the school, he is singled out and blamed for everything done to her. With Shouko transferring out of the school, Shouya is left at the mercy of his classmates. He is heartlessly ostracized all throughout elementary and middle school, while teachers turn a blind eye."
   },
   {
     "id" : "5",
-    "name" : "Fullmetal Alchemist: Brotherhood"
+    "name" : "Fullmetal Alchemist: Brotherhood",
+    "cover" : "https://cdn.myanimelist.net/images/anime/1208/94745.jpg",
+    "description" : "After a horrific alchemy experiment goes wrong in the Elric household, brothers Edward and Alphonse are left in a catastrophic new reality. Ignoring the alchemical principle banning human transmutation, the boys attempted to bring their recently deceased mother back to life. Instead, they suffered brutal personal loss: Alphonse's body disintegrated while Edward lost a leg and then sacrificed an arm to keep Alphonse's soul in the physical realm by binding it to a hulking suit of armor."
   },
   {
     "id" : "6",
-    "name" : "Shingeki no Kyojin Season 3 Part 2"
+    "name" : "Shingeki no Kyojin Season 3 Part 2",
+    "cover" : "https://cdn.myanimelist.net/images/anime/1517/100633.jpg",
+    "description" : "Seeking to restore humanity's diminishing hope, the Survey Corps embark on a mission to retake Wall Maria, where the battle against the merciless 'Titans' takes the stage once again."
   },
   {
     "id" : "7",
-    "name" : "Clannad: After Story"
+    "name" : "Clannad: After Story",
+    "cover" : "https://cdn.myanimelist.net/images/anime/1299/110774.jpg",
+    "description" : "Tomoya Okazaki and Nagisa Furukawa have graduated from high school, and together, they experience the emotional rollercoaster of growing up. Unable to decide on a course for his future, Tomoya learns the value of a strong work ethic and discovers the strength of Nagisa's support. Through the couple's dedication and unity of purpose, they push forward to confront their personal problems, deepen their old relationships, and create new bonds."
   },
   {
     "id" : "8",
-    "name" : "3-gatsu no Lion 2nd Season"
+    "name" : "3-gatsu no Lion 2nd Season",
+    "cover" : "https://cdn.myanimelist.net/images/anime/3/88469.jpg",
+    "description" : "Now in his second year of high school, Rei Kiriyama continues pushing through his struggles in the professional shogi world as well as his personal life. Surrounded by vibrant personalities at the shogi hall, the school club, and in the local community, his solitary shell slowly begins to crack. Among them are the three Kawamoto sisters—Akari, Hinata, and Momo—who forge an affectionate and familial bond with Rei. Through these ties, he realizes that everyone is burdened by their own emotional hardships and begins learning how to rely on others while supporting them in return."
   },
   {
     "id" : "9",
-    "name" : "Code Geass: Hangyaku no Lelouch R2"
+    "name" : "Code Geass: Hangyaku no Lelouch R2",
+    "cover" : "https://cdn.myanimelist.net/images/anime/1088/135089.jpg",
+    "description" : "One year has passed since the Black Rebellion, a failed uprising against the Holy Britannian Empire led by the masked vigilante Zero, who is now missing. At a loss without their revolutionary leader, Area 11's resistance group—the Black Knights—find themselves too powerless to combat the brutality inflicted upon the Elevens by Britannia, which has increased significantly in order to crush any hope of a future revolt."
   },
   {
     "id" : "10",
-    "name" : "Violet Evergarden Movie"
+    "name" : "Violet Evergarden Movie",
+    "cover" : "https://cdn.myanimelist.net/images/anime/1825/110716.jpg",
+    "description" : "Several years have passed since the end of The Great War. As the radio tower in Leidenschaftlich continues to be built, telephones will soon become more relevant, leading to a decline in demand for 'Auto Memory Dolls.' Even so, Violet Evergarden continues to rise in fame after her constant success with writing letters. However, sometimes the one thing you long for is the one thing that does not appear."
   },
   {
     "id" : "11",
-    "name" : "Vinland Saga Season 2"
+    "name" : "Vinland Saga Season 2",
+    "cover" : "https://cdn.myanimelist.net/images/anime/1170/124312.jpg",
+    "description" : "After his father's death and the destruction of his village at the hands of English raiders, Einar wishes for a peaceful life with his family on their newly rebuilt farms. However, fate has other plans: his village is invaded once again. Einar watches helplessly as the marauding Danes burn his lands and slaughter his family. The invaders capture Einar and take him back to Denmark as a slave."
   },
   {
     "id" : "12",
-    "name" : "Bocchi the Rock!"
+    "name" : "Bocchi the Rock!",
+    "cover" : "https://cdn.myanimelist.net/images/anime/1448/127956.jpg",
+    "description" : "Yearning to make friends and perform live with a band, lonely and socially anxious Hitori 'Bocchi' Gotou devotes her time to playing the guitar. On a fateful day, Bocchi meets the outgoing drummer Nijika Ijichi, who invites her to join Kessoku Band when their guitarist, Ikuyo Kita, flees before their first show. Soon after, Bocchi meets her final bandmate—the cool bassist Ryou Yamada."
   },
   {
     "id" : "13",
-    "name" : "Haikyuu!! Karasuno Koukou vs. Shiratorizawa Gakuen Koukou"
+    "name" : "Haikyuu!! Karasuno Koukou vs. Shiratorizawa Gakuen Koukou",
+    "cover" : "https://cdn.myanimelist.net/images/anime/7/81992.jpg",
+    "description" : "After the victory against Aoba Jousai High, Karasuno High School, once called “a fallen powerhouse, a crow that can't fly,” has finally reached the climax of the heated Spring tournament. Now, to advance to nationals, the Karasuno team has to defeat the powerhouse Shiratorizawa Academy. Karasuno's greatest hurdle is their adversary's ace, Wakatoshi Ushijima, the number one player in the Miyagi Prefecture, and one of the country's top three aces."
   },
   {
     "id" : "14",
-    "name" : "One Piece"
+    "name" : "One Piece",
+    "cover" : "https://cdn.myanimelist.net/images/anime/1244/138851.jpg",
+    "description" : "Barely surviving in a barrel after passing through a terrible whirlpool at sea, carefree Monkey D. Luffy ends up aboard a ship under attack by fearsome pirates. Despite being a naive-looking teenager, he is not to be underestimated. Unmatched in battle, Luffy is a pirate himself who resolutely pursues the coveted One Piece treasure and the King of the Pirates title that comes with it."
   },
   {
     "id" : "15",
-    "name" : "86 Part 2"
+    "name" : "86 Part 2",
+    "cover" : "https://cdn.myanimelist.net/images/anime/1321/117508.jpg",
+    "description" : "The disappearance of the Spearhead Squadron beyond the horizon does little to hide the intensity of the Republic of San Magnolia's endless propaganda. Vladilena Milizé continues to operate as 'Handler One,' the commander of yet another dehumanized 86th faction's squadron in the continuous war against the Legion."
   }
 ]

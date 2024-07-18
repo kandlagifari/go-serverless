@@ -18,4 +18,10 @@ export class MoviesApiService {
       .pipe(map(res => res));
   }
 
+  insert(movie: Movie){
+    return this.http
+      .post(environment.api, JSON.stringify(movie))
+      .pipe(map(res => res));
+  }
+
 }
