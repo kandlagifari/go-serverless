@@ -16,9 +16,11 @@ export class NavbarComponent implements OnInit {
   ngOnInit() {}
 
   newMovie(content: any){
-    const modalRef = this.modalService.open(content);
-    modalRef.componentInstance.dismiss = () => {
-      modalRef.dismiss();
-    };
+    const modalRef = this.modalService.open(content, { size: 'lg' });
+    modalRef.result.then((result) => {
+      console.log(`Closed with: ${result}`);
+    }, (reason) => {
+      console.log(`Dismissed: ${reason}`);
+    });
   }
 }

@@ -16,6 +16,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/feature/dynamodb/attributevalue"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
+	"github.com/google/uuid"
 )
 
 type Movie struct {
@@ -55,14 +56,9 @@ func insert(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespon
 		}, nil
 	}
 
-	// Extract the inner JSON string from the "body" field
-	innerJSON := requestBody["body"]
-
-	log.Printf("Inner JSON string: %s", innerJSON)
-
 	// Unmarshal the inner JSON string into a Movie struct
 	var movie Movie
-	err = json.Unmarshal([]byte(innerJSON), &movie)
+	err = json.Unmarshal([]byte(requestBody["body"]), &movie)
 	if err != nil {
 		log.Printf("Error unmarshalling inner JSON: %v", err)
 		return events.APIGatewayProxyResponse{
@@ -70,6 +66,10 @@ func insert(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespon
 			Body:       "Invalid payload",
 		}, nil
 	}
+
+	// Generate a unique ID for the movie
+	movie.ID = uuid.New().String()
+	log.Printf("Generated ID for movie: %s", movie.ID)
 
 	log.Printf("Received movie to insert: %+v", movie)
 

@@ -19,5 +19,5 @@
 </nav>
 
 <ng-template #content let-c="close" let-d="dismiss">
-  <new-movie></new-movie>
+    <new-movie [dismiss]="d"></new-movie>
 </ng-template>

@@ -25,13 +25,19 @@ export class NewMovieComponent implements OnInit {
   }
 
   save(title: string, description: string, cover: string) {
-    this.dismiss();
-    this.movie = new Movie(title, description, cover);
-    this.moviesApiService.insert(this.movie).subscribe(
-      res => {
+    // console.log('Save button clicked:', { title, description, cover });
+    const movie = new Movie(title, description, cover);
+    const payload = {
+      body: JSON.stringify(movie)
+    };
+
+    this.moviesApiService.insert(payload).subscribe(
+      (res) => {
+        // console.log('Movie saved successfully:', res);
         this.showMsg = true;
       },
-      err => {
+      (err) => {
+        // console.error('Error saving movie:', err);
         this.showMsg = false;
       }
     );

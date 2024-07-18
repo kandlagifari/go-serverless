@@ -21,3 +21,8 @@ init-db:
 
 run-frontend:
 	@cd frontend && pwd && ng serve --host 0.0.0.0
+
+run-s3-site:
+	# @cd frontend && ng build --configuration production
+	@cd frontend && awslocal s3 cp --recursive dist/frontend/browser/ s3://assalamualaikumserverless.cloud/
+	@awslocal s3 ls s3://assalamualaikumserverless.cloud/

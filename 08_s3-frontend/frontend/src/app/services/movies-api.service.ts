@@ -18,9 +18,9 @@ export class MoviesApiService {
       .pipe(map(res => res));
   }
 
-  insert(movie: Movie){
+  insert(payload: any): Observable<any> {
     return this.http
-      .post(environment.api, JSON.stringify(movie))
+      .post<any>(environment.api, payload)
       .pipe(map(res => res));
   }
 

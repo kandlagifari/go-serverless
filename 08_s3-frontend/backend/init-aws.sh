@@ -11,6 +11,14 @@ echo "Create S3 Bucket"
 awslocal s3api create-bucket \
     --bucket assalamualaikum-serverless-go-bucket
 
+echo "Create S3 Static Website Bucket"
+awslocal s3api create-bucket \
+    --bucket assalamualaikumserverless.cloud
+
+echo "Configure the bucket to host a website"
+awslocal s3 website s3://assalamualaikumserverless.cloud \
+    --index-document index.html
+
 echo "Create IAM Policy"
 awslocal iam create-policy \
     --policy-name PushLogsToCloudWatch \
