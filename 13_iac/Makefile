@@ -1,23 +1,41 @@
+build-backend:
+	@cd 01_serverless-terraform/go-backend/findAll && pwd && ./build.sh
+	@cd 01_serverless-terraform/go-backend/findOne && pwd && ./build.sh
+	@cd 01_serverless-terraform/go-backend/insert && pwd && ./build.sh
+	@cd 01_serverless-terraform/go-backend/delete && pwd && ./build.sh
+
+build-find-all:
+	@cd 01_serverless-terraform/go-backend/findAll && pwd && ./build.sh
+
+build-find-one:
+	@cd 01_serverless-terraform/go-backend/findOne && pwd && ./build.sh
+
+build-insert:
+	@cd 01_serverless-terraform/go-backend/insert && pwd && ./build.sh
+
+build-delete:
+	@cd 01_serverless-terraform/go-backend/delete && pwd && ./build.sh
+
 tfl-all:
 	@cd 01_serverless-terraform && pwd
 	@cd 01_serverless-terraform && tflocal fmt -recursive
 
-tfi-staging:
-	@cd 01_serverless-terraform/environments/staging && pwd
-	@cd 01_serverless-terraform/environments/staging && tflocal init
+tfi-local:
+	@cd 01_serverless-terraform/environments/01_local && pwd
+	@cd 01_serverless-terraform/environments/01_local && tflocal init
 
-tfp-staging:
-	@cd 01_serverless-terraform/environments/staging && pwd
-	@cd 01_serverless-terraform/environments/staging && tflocal plan
+tfp-local:
+	@cd 01_serverless-terraform/environments/01_local && pwd
+	@cd 01_serverless-terraform/environments/01_local && tflocal plan
 
-tfa-staging:
-	@cd 01_serverless-terraform/environments/staging && pwd
-	@cd 01_serverless-terraform/environments/staging && tflocal apply
+tfa-local:
+	@cd 01_serverless-terraform/environments/01_local && pwd
+	@cd 01_serverless-terraform/environments/01_local && tflocal apply
 
-tfd-staging:
-	@cd 01_serverless-terraform/environments/staging && pwd
-	@cd 01_serverless-terraform/environments/staging && tflocal destroy
+tfd-local:
+	@cd 01_serverless-terraform/environments/01_local && pwd
+	@cd 01_serverless-terraform/environments/01_local && tflocal destroy
 
-tfs-staging:
-	@cd 01_serverless-terraform/environments/staging && pwd
-	@cd 01_serverless-terraform/environments/staging && tflocal state list
+tfs-local:
+	@cd 01_serverless-terraform/environments/01_local && pwd
+	@cd 01_serverless-terraform/environments/01_local && tflocal state list
