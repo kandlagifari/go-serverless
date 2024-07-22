@@ -12,7 +12,7 @@ resource "aws_api_gateway_integration" "request_integration" {
   resource_id = aws_api_gateway_method.request_method[each.key].resource_id
   http_method = aws_api_gateway_method.request_method[each.key].http_method
   type        = "AWS_PROXY"
-  uri         = each.value["invoke_uri"]
+  uri         = each.value["invoke_uri"][each.key]
 
   # AWS lambdas can only be invoked with the POST method
   integration_http_method = "POST"
@@ -20,7 +20,7 @@ resource "aws_api_gateway_integration" "request_integration" {
 
 resource "aws_lambda_permission" "allow_api_gateway" {
   for_each      = var.api_gateway_details
-  function_name = each.value["lambda_function_arn"]
+  function_name = each.value["lambda_function_arn"][each.key]
   statement_id  = "AllowExecutionFromApiGateway"
   action        = "lambda:InvokeFunction"
   principal     = "apigateway.amazonaws.com"
@@ -45,8 +45,4 @@ resource "aws_api_gateway_integration_response" "response_method_integration" {
   resource_id = aws_api_gateway_method.request_method[each.key].resource_id
   http_method = aws_api_gateway_method_response.response_method[each.key].http_method
   status_code = aws_api_gateway_method_response.response_method[each.key].status_code
-
-  response_templates = {
-    "application/json" = ""
-  }
 }

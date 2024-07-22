@@ -82,23 +82,35 @@ lambda_function_config = {
     lambda_handler       = "bootstrap"
     lambda_runtime       = "provided.al2023"
     lambda_timeout       = 120
+    environment_variables = {
+      TABLE_NAME = "movies"
+    }
   },
   "find_one" = {
     lambda_function_name = "local-go-backend-find-one-lambda"
     lambda_handler       = "bootstrap"
     lambda_runtime       = "provided.al2023"
     lambda_timeout       = 120
+    environment_variables = {
+      TABLE_NAME = "movies"
+    }
   },
   "insert" = {
     lambda_function_name = "local-go-backend-insert-lambda"
     lambda_handler       = "bootstrap"
     lambda_runtime       = "provided.al2023"
     lambda_timeout       = 120
+    environment_variables = {
+      TABLE_NAME = "movies"
+    }
   },
   "delete" = {
     lambda_function_name = "local-go-backend-delete-lambda"
     lambda_handler       = "bootstrap"
     lambda_runtime       = "provided.al2023"
     lambda_timeout       = 120
+    environment_variables = {
+      TABLE_NAME = "movies"
+    }
   }
 }

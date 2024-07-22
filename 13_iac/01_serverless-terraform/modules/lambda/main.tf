@@ -17,4 +17,8 @@ resource "aws_lambda_function" "this" {
 
   runtime = each.value["lambda_runtime"]
   timeout = each.value["lambda_timeout"]
+
+  environment {
+    variables = each.value["environment_variables"]
+  }
 }

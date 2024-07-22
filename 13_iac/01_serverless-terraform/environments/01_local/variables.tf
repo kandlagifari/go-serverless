@@ -86,9 +86,10 @@ variable "lambda_code_file" {
 
 variable "lambda_function_config" {
   type = map(object({
-    lambda_function_name = string
-    lambda_handler       = string
-    lambda_runtime       = string
-    lambda_timeout       = number
+    lambda_function_name  = string
+    lambda_handler        = string
+    lambda_runtime        = string
+    lambda_timeout        = number
+    environment_variables = map(string)
   }))
 }
