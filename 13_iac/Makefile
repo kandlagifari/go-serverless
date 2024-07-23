@@ -52,3 +52,11 @@ build-frontend:
 run-s3-site:
 	@cd 01_serverless-terraform/angular-frontend && awslocal s3 cp --recursive dist/frontend/browser/ s3://assalamualaikumserverless.cloud/
 	@awslocal s3 ls s3://assalamualaikumserverless.cloud/
+
+empty-bucket:
+	awslocal s3api delete-objects \
+	--bucket assalamualaikumserverless.cloud \
+	--delete "$$(awslocal s3api list-object-versions \
+	--bucket assalamualaikumserverless.cloud \
+	--output=json \
+	--query='{Objects: Versions[].{Key:Key,VersionId:VersionId}}')"
