@@ -93,3 +93,14 @@ variable "lambda_function_config" {
     environment_variables = map(string)
   }))
 }
+
+
+/* ----------------------------------- S3 for Angular Frontend ---------------------------------- */
+
+variable "s3_bucket_details" {
+  type = map(object({
+    bucket_name          = string
+    rule_id              = string
+    rule_expiration_days = number
+  }))
+}

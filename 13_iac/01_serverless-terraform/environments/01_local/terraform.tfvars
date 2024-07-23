@@ -114,3 +114,14 @@ lambda_function_config = {
     }
   }
 }
+
+
+/* ---------------------------------------------  S3 for Angular Frontend --------------------------------------------- */
+
+s3_bucket_details = {
+  "assalamualaikumserverless" = {
+    bucket_name          = "assalamualaikumserverless.cloud"
+    rule_id              = "LifecyclePolicy-90Days"
+    rule_expiration_days = 90
+  }
+}

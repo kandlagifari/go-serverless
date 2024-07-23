@@ -39,3 +39,16 @@ tfd-local:
 tfs-local:
 	@cd 01_serverless-terraform/environments/01_local && pwd
 	@cd 01_serverless-terraform/environments/01_local && tflocal state list
+
+init-db:
+	@cd 01_serverless-terraform/init-db && pwd && go run init-db.go
+
+run-frontend:
+	@cd 01_serverless-terraform/angular-frontend && pwd && ng serve --host 0.0.0.0
+
+build-frontend:
+	@cd 01_serverless-terraform/angular-frontend && ng build --configuration production
+
+run-s3-site:
+	@cd 01_serverless-terraform/angular-frontend && awslocal s3 cp --recursive dist/frontend/browser/ s3://assalamualaikumserverless.cloud/
+	@awslocal s3 ls s3://assalamualaikumserverless.cloud/

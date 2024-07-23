@@ -135,3 +135,14 @@ resource "aws_api_gateway_deployment" "local" {
   rest_api_id = aws_api_gateway_rest_api.api.id
   stage_name  = "local"
 }
+
+
+
+/* ------------------------------------------------------------------------------------------------------------------ */
+/*                                                 S3 Static Website                                                  */
+/* ------------------------------------------------------------------------------------------------------------------ */
+
+module "local_s3_website" {
+  source            = "../../modules/s3-website"
+  s3_bucket_details = var.s3_bucket_details
+}
